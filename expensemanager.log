@@ -1,0 +1,36 @@
+May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Logging configureConsoleLog
+INFO: ConsoleHandler created for java.util.logging.ConsoleHandler@677327b6
+May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Logging configure
+INFO: Logging configured properly for console and file: expensemanager.log
+May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Persistence loadExpenses
+INFO: expense manager loaded 
+May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
+INFO: the date picker has been set
+May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
+INFO: the date picker has been set
+May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.expense.ExpenseManager displayExpenses
+INFO: the list of 5 expenses is displayed
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker getLocalDate
+INFO: the local date from date picker obtained
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense <init>
+INFO: expense with name internet service created
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense bread is 155.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense coffee is 124.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense beer is 160.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense gas is 300.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 0.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.ExpenseManager getCurrentValuePerMonth
+INFO: the current value of expenses per month is 739.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense internet service is 30.0
+May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.ExpenseManager addExpense
+INFO: the expense internet service has beed added
+May 06, 2016 9:14:33 AM ro.tm.siit.expensemanager.Persistence saveExpenses
+INFO: expense manager saved 
+May 06, 2016 9:14:33 AM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame$1 windowClosing
+INFO: window closed successfully and catalog saved
