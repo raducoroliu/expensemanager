@@ -1,7 +1,6 @@
 package ro.tm.siit.expensemanager.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,10 +11,10 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -25,23 +24,32 @@ import ro.tm.siit.expensemanager.expense.Expense;
 import ro.tm.siit.expensemanager.expense.ExpenseManager;
 
 /**
+ * ExpenseManagerFrame class extends JFrame and creates a frame in which are
+ * displayed the expenses and a menu for managing expenses
+ * 
  * @author Radu
  *
  */
 public class ExpenseManagerFrame extends JFrame {
-    
+
+    /**
+     * logger for this class
+     */
     public static final Logger LOGGER = Logger.getGlobal();
-    
-    //private List<Expense> expenses;
-    //private JFrame expenseManagerFrame;
+
+    public JLabel filterLabel;
+
     private ExpenseManager expenseManager;
-    private JPanel tablePanel;
-    //private JPanel statisticsPanel;
     private JTable expensesTable;
     private DefaultTableModel model;
     private JMenuBar menu;
-    
 
+    /**
+     * constructor for ExpenseManagerFrame
+     * 
+     * @param expenseManager
+     *            the expense manager
+     */
     public ExpenseManagerFrame(ExpenseManager expenseManager) {
 	super("Expense Manager");
 	this.expenseManager = expenseManager;
@@ -55,50 +63,39 @@ public class ExpenseManagerFrame extends JFrame {
 	    public void windowClosing(WindowEvent e) {
 		LOGGER.fine("saving expenseManager " + expenseManager);
 		save(expenseManager);
-		LOGGER.info("window closed successfully and catalog saved");
+		LOGGER.info("window closed successfully and expenseManager saved");
 	    }
 	});
 	createComponents();
+	LOGGER.info("expense manager window created");
     }
 
+    /**
+     * creates the components of the frame
+     */
     private void createComponents() {
-	tablePanel = new JPanel();
-	
-	Dimension dim = tablePanel.getPreferredSize();
-	dim.width = 700;
-	dim.height = 400;
-	tablePanel.setPreferredSize(dim);
-	tablePanel.setLayout(new BorderLayout());
-	tablePanel.setBorder(BorderFactory.createEtchedBorder());
-	
-//	statisticsPanel = new StatisticsPanel(expenseManager);
-//	Dimension dim1 = statisticsPanel.getPreferredSize();
-//	dim1.width = 600;
-//	dim1.height = 100;
-//	statisticsPanel.setPreferredSize(dim1);
-//	statisticsPanel.setBorder(BorderFactory.createEtchedBorder());
-//	
-	add(tablePanel, BorderLayout.CENTER);
-	//add(statisticsPanel, BorderLayout.SOUTH);
-	
-	
-	
+	LOGGER.fine("creating the components for expense manager window");
 	expensesTable = new JTable();
-
-	//expenseTable.setBorder(BorderFactory.createEtchedBorder());
+	expensesTable.setBorder(BorderFactory.createEtchedBorder());
 	expensesTable.setFillsViewportHeight(true);
 	model = (DefaultTableModel) expensesTable.getModel();
 	JScrollPane scrollPane = new JScrollPane(expensesTable);
 	expensesTable.setAutoCreateRowSorter(true);
 
-	tablePanel.add(scrollPane, BorderLayout.CENTER);
+	add(scrollPane, BorderLayout.CENTER);
 	createMenuBar();
+	menu.setEnabled(false);
 
-	List<Expense> expensesToShow = expenseManager.getAll();
-	expenseManager.displayExpenses(model, expensesToShow);
+	List<Expense> expensesForDisplay = expenseManager.getAll();
+	expenseManager.displayExpenses(model, expensesForDisplay);
+	LOGGER.info("the components for expense manager window are created");
     }
 
+    /**
+     * creates a menu for managing expenses
+     */
     private void createMenuBar() {
+	LOGGER.fine("creating the menu for expense manager window");
 	menu = new JMenuBar();
 	menu.setBorder(BorderFactory.createEtchedBorder());
 
@@ -113,7 +110,7 @@ public class ExpenseManagerFrame extends JFrame {
 		addExpense.setVisible(true);
 	    }
 	});
-	
+
 	JMenuItem setBudgetItem = new JMenuItem("Set monthly budget...");
 	JDialog setBudget = new SetBudget(expenseManager);
 	setBudgetItem.addActionListener(new ActionListener() {
@@ -134,13 +131,13 @@ public class ExpenseManagerFrame extends JFrame {
 	    }
 	});
 
-	fileMenu.add(addItem);
 	fileMenu.add(setBudgetItem);
+	fileMenu.add(addItem);
 	fileMenu.addSeparator();
 	fileMenu.add(exitItem);
 
 	JMenu viewMenu = new JMenu("View");
-	
+
 	JMenuItem defaultItem = new JMenuItem("View all");
 	defaultItem.addActionListener(new ActionListener() {
 
@@ -152,12 +149,12 @@ public class ExpenseManagerFrame extends JFrame {
 	});
 
 	JMenuItem optionItem = new JMenuItem("Filter options...");
-	JDialog optionFilter = new OptionFilter(expenseManager, model);
+	JDialog filterOptions = new FilterOptions(expenseManager, model);
 	optionItem.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		optionFilter.setVisible(true);
+		filterOptions.setVisible(true);
 	    }
 	});
 
@@ -166,7 +163,7 @@ public class ExpenseManagerFrame extends JFrame {
 	viewMenu.add(optionItem);
 
 	JMenu statisticsMenu = new JMenu("Statistics");
-	
+
 	JMenuItem forecastItem = new JMenuItem("Forecast...");
 	JDialog forecast = new Forecast(expenseManager);
 	forecastItem.addActionListener(new ActionListener() {
@@ -176,7 +173,7 @@ public class ExpenseManagerFrame extends JFrame {
 		forecast.setVisible(true);
 	    }
 	});
-	
+
 	JMenuItem biggestExpenseItem = new JMenuItem("Biggest expense...");
 	JDialog biggestExpense = new BiggestExpense(expenseManager, model);
 	biggestExpenseItem.addActionListener(new ActionListener() {
@@ -186,17 +183,24 @@ public class ExpenseManagerFrame extends JFrame {
 		biggestExpense.setVisible(true);
 	    }
 	});
-	
+
 	statisticsMenu.add(forecastItem);
 	statisticsMenu.add(biggestExpenseItem);
-	
+
 	menu.add(fileMenu);
 	menu.add(viewMenu);
 	menu.add(statisticsMenu);
-
+	
 	setJMenuBar(menu);
+	LOGGER.info("the menu for expense manager window are created");
     }
 
+    /**
+     * saves the expense manager used Persistence class
+     * 
+     * @param expenseManager
+     *            the expense manager
+     */
     protected void save(ExpenseManager expenseManager) {
 	Persistence storage = new Persistence();
 	storage.saveExpenses(expenseManager);

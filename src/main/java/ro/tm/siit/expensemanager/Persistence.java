@@ -16,6 +16,9 @@ import ro.tm.siit.expensemanager.expense.Expense;
 import ro.tm.siit.expensemanager.expense.ExpenseManager;
 
 /**
+ * creates expenseManager`s persistence by saving it in a file and read it from
+ * file
+ * 
  * @author Radu
  *
  */
@@ -28,6 +31,12 @@ public class Persistence {
 
     private Path file = Paths.get("expense_manager.data");
 
+    /**
+     * save expenseManager to the file
+     * 
+     * @param expenseManager
+     *            the expenseManager
+     */
     public void saveExpenses(ExpenseManager expenseManager) {
 	LOGGER.fine("started saving expense manager to file " + file);
 	try (OutputStream os = Files.newOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(os)) {
@@ -38,6 +47,11 @@ public class Persistence {
 	}
     }
 
+    /**
+     * load expenseManager from the file
+     * 
+     * @return expenseManager
+     */
     public ExpenseManager loadExpenses() {
 	LOGGER.fine("started loading expense manager from file " + file);
 	ExpenseManager expenseManager = null;
@@ -57,5 +71,4 @@ public class Persistence {
 	}
 	return expenseManager;
     }
-
 }

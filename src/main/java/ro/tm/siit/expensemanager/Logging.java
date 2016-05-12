@@ -10,54 +10,60 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * Models a logger
+ * 
  * @author Radu
  *
  */
 public class Logging {
 
-	/**
-	 * logger for this class
-	 */
-	public static final Logger LOGGER = Logger.getGlobal();
+    /**
+     * logger for this class
+     */
+    public static final Logger LOGGER = Logger.getGlobal();
 
-	/**
-	 * configures logging system to write also in file filename, logging
-	 * everything
-	 */
-	public void configure(String filename) {
-		try {
-			Handler fileHandler = configureFileLog(filename);
-			Logger.getGlobal().addHandler(fileHandler);
-			Handler consoleHandler = configureConsoleLog();
-			Logger.getGlobal().addHandler(consoleHandler);
-			Logger.getGlobal().setLevel(Level.ALL);
-		} catch (SecurityException | IOException e) {
-			LOGGER.severe("cannot init logging system");
-		}
-		
-		LOGGER.info("Logging configured properly for console and file: " + filename);
+    /**
+     * configures logging system to write also in file filename, logging
+     * everything
+     */
+    public void configure(String filename) {
+	try {
+	    Handler fileHandler = configureFileLog(filename);
+	    Logger.getGlobal().addHandler(fileHandler);
+	    Handler consoleHandler = configureConsoleLog();
+	    Logger.getGlobal().addHandler(consoleHandler);
+	    Logger.getGlobal().setLevel(Level.ALL);
+	} catch (SecurityException | IOException e) {
+	    LOGGER.severe("cannot init logging system");
 	}
 
-	/**
-	 * configure file handler to write into file for level.info
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	private Handler configureFileLog(String filename) throws IOException {
-		Handler handler = new FileHandler(filename);
-		handler.setFormatter(new SimpleFormatter());
-		handler.setLevel(Level.INFO);
-		LOGGER.info("FileHandler created for file: " + filename + " " + handler);
-		return handler;
-	}
+	LOGGER.info("Logging configured properly for console and file: " + filename);
+    }
 
-	private Handler configureConsoleLog() {
-		Handler handler = new ConsoleHandler();
-		handler.setFormatter(new SimpleFormatter());
-		handler.setLevel(Level.ALL);
-		LOGGER.info("ConsoleHandler created for " + handler);
-		return handler;
-	}
+    /**
+     * configure file handler to write into file for level.info
+     * 
+     * @param filename
+     * @return the file handler
+     * @throws IOException
+     */
+    private Handler configureFileLog(String filename) throws IOException {
+	Handler handler = new FileHandler(filename);
+	handler.setFormatter(new SimpleFormatter());
+	handler.setLevel(Level.INFO);
+	LOGGER.info("FileHandler created for file: " + filename + " " + handler);
+	return handler;
+    }
 
+    /**
+     * configure console handler to write to console for all level
+     * 
+     * @return the console handler
+     */
+    private Handler configureConsoleLog() {
+	Handler handler = new ConsoleHandler();
+	handler.setFormatter(new SimpleFormatter());
+	handler.setLevel(Level.ALL);
+	LOGGER.info("ConsoleHandler created for " + handler);
+	return handler;
+    }
 }

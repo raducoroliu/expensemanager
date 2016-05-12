@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class Expense implements Serializable {
 
     /**
-     * creating an enum for type of expense
+     * creating an enum for expense type
      * 
      * @author Radu
      *

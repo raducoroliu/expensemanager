@@ -14,34 +14,51 @@ import javax.swing.JTextField;
 
 import ro.tm.siit.expensemanager.expense.ExpenseManager;
 
+/**
+ * SetBudget class extends JDialog and creates a dialog window to sets the limit
+ * budget per month
+ * 
+ * @author Radu
+ *
+ */
 public class SetBudget extends JDialog {
-    
+
     /**
      * logger for this class
      */
     public static final Logger LOGGER = Logger.getGlobal();
-    
+
     private ExpenseManager expenseManager;
     private JLabel budgetLabel;
     private JTextField budgetText;
     private JButton okButton;
     private JButton cancelButton;
 
+    /**
+     * constructor for SetBudget
+     * 
+     * @param expenseManager
+     *            the expense manager
+     */
     public SetBudget(ExpenseManager expenseManager) {
 	super();
+	LOGGER.fine("creating the SetBudget dialog window for expense manager");
 	this.expenseManager = expenseManager;
 	setTitle("Set budget limit per month");
 	setSize(250, 150);
 	getContentPane().setLayout(new GridBagLayout());
 	setLocationRelativeTo(null);
-	
+
 	createComponents();
 	arrangeComponents();
-
+	LOGGER.info("the SetBudget dialog window created and is visible");
     }
 
+    /**
+     * creating the components for set budget dialog window
+     */
     private void createComponents() {
-
+	LOGGER.fine("creating the components for SetBudget dialog window");
 	budgetLabel = new JLabel("Budget value : ");
 	budgetText = new JTextField(10);
 	budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
@@ -55,12 +72,25 @@ public class SetBudget extends JDialog {
 	    public void actionPerformed(ActionEvent e) {
 		try {
 		    float budgetPerMonth = Float.parseFloat(budgetText.getText());
-		    expenseManager.setBudgetPerMonth(budgetPerMonth, SetBudget.this);
+		    if (budgetPerMonth != expenseManager.getBudgetPerMonth()
+			    && expenseManager.getBudgetPerMonth() > 0) {
+			int choice = JOptionPane.showOptionDialog(SetBudget.this,
+				"The budget will be changed. Do you want to continue?", "Warning",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if (choice == JOptionPane.NO_OPTION) {
+			    budgetPerMonth = expenseManager.getBudgetPerMonth();
+			}
+		    }
+		    expenseManager.setBudgetPerMonth(budgetPerMonth);
 		    budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
 		    setVisible(false);
+		    LOGGER.info("the limit budget per month is " + budgetPerMonth
+			    + " the SetBudget dialog window became invisible");
 		} catch (NumberFormatException ex) {
+		    LOGGER.warning("set budget failed " + ex);
 		    JOptionPane.showMessageDialog(SetBudget.this, "Value must be a number !");
 		} catch (IllegalArgumentException ex) {
+		    LOGGER.warning("set budget failed " + ex);
 		    JOptionPane.showMessageDialog(SetBudget.this, ex.getMessage());
 		}
 	    }
@@ -72,19 +102,26 @@ public class SetBudget extends JDialog {
 	    public void actionPerformed(ActionEvent e) {
 		budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
 		setVisible(false);
+		LOGGER.info("the SetBudget dialog window became invisible");
 	    }
 	});
+	LOGGER.info("the components for SetBudget dialog window has been created");
     }
 
+    /**
+     * arranges the components created in the window
+     */
     private void arrangeComponents() {
+	LOGGER.fine("arranging the components in set budget dialog window");
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.NONE;
 
 	c.weightx = 1;
 	c.weighty = 0.2;
+
+	// first row
 	c.gridx = 0;
 	c.gridy = 0;
-
 	c.anchor = GridBagConstraints.LINE_END;
 	add(budgetLabel, c);
 
@@ -92,6 +129,7 @@ public class SetBudget extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(budgetText, c);
 
+	// second row
 	c.gridx = 0;
 	c.gridy++;
 	c.anchor = GridBagConstraints.CENTER;
@@ -101,5 +139,7 @@ public class SetBudget extends JDialog {
 	c.gridwidth = 1;
 	c.anchor = GridBagConstraints.CENTER;
 	add(cancelButton, c);
+
+	LOGGER.info("the components has been arranged in set budget dialog window");
     }
 }

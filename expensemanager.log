@@ -1,36 +1,136 @@
-May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Logging configureConsoleLog
-INFO: ConsoleHandler created for java.util.logging.ConsoleHandler@677327b6
-May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Logging configure
+May 12, 2016 12:12:39 PM ro.tm.siit.expensemanager.Logging configureConsoleLog
+INFO: ConsoleHandler created for java.util.logging.ConsoleHandler@135fbaa4
+May 12, 2016 12:12:39 PM ro.tm.siit.expensemanager.Logging configure
 INFO: Logging configured properly for console and file: expensemanager.log
-May 06, 2016 9:13:07 AM ro.tm.siit.expensemanager.Persistence loadExpenses
+May 12, 2016 12:12:39 PM ro.tm.siit.expensemanager.Persistence loadExpenses
 INFO: expense manager loaded 
-May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
-INFO: the date picker has been set
-May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
-INFO: the date picker has been set
-May 06, 2016 9:13:08 AM ro.tm.siit.expensemanager.expense.ExpenseManager displayExpenses
-INFO: the list of 5 expenses is displayed
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.datepicker.MyDatePicker getLocalDate
-INFO: the local date from date picker obtained
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense <init>
-INFO: expense with name internet service created
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
-INFO: value per month of expense bread is 155.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
+INFO: the datepicker has been set
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.AddExpense createComponents
+INFO: the components for add expense dialog window has been created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.datepicker.MyDatePicker setInitialDate
+INFO: the initial date in datepicker has been set
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.AddExpense initializeComponents
+INFO: the components has been initialized
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.AddExpense arrangeComponents
+INFO: the components has been arranged in add expense dialog window
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.AddExpense <init>
+INFO: add expense dialog window has been created and is visible
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.SetBudget createComponents
+INFO: the components for SetBudget dialog window has been created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.SetBudget arrangeComponents
+INFO: the components has been arranged in set budget dialog window
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.SetBudget <init>
+INFO: the SetBudget dialog window created and is visible
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.datepicker.MyDatePicker <init>
+INFO: the datepicker has been set
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.FilterOptions createComponents
+INFO: the components for filter options dialog window has been created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.datepicker.MyDatePicker setInitialDate
+INFO: the initial date in datepicker has been set
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.FilterOptions initializeComponents
+INFO: the components has been initialized
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.FilterOptions arrangeComponents
+INFO: the components has been arranged in filter options dialog window
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.FilterOptions <init>
+INFO: filter options dialog window has been created and is visible
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.Forecast createComponents
+INFO: the components for forecast dialog window has been created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.Forecast arrangeComponents
+INFO: the components has been arranged in forecast dialog window
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.Forecast <init>
+INFO: the forecast dialog window created and is visible
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.BiggestExpense createComponents
+INFO: the components for biggest expense window dialog has been created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.BiggestExpense arrangeComponents
+INFO: the components has been arranged in biggest expense window dialog
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.BiggestExpense <init>
+INFO: biggest expense window dialog has been created and is visible
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame createMenuBar
+INFO: the menu for expense manager window are created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.expense.ExpenseManager displayExpenses
+INFO: the list of 16 expenses is displayed
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame createComponents
+INFO: the components for expense manager window are created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame <init>
+INFO: expense manager window created
+May 12, 2016 12:12:40 PM ro.tm.siit.expensemanager.ExpenseManagerApp$1 run
+INFO: expense manager frame is visible
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
 INFO: value per month of expense coffee is 124.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense coffee is 124.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense gas is 250.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense coffee is 124.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
 INFO: value per month of expense beer is 160.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
-INFO: value per month of expense gas is 300.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
-INFO: value per month of expense vacation is 0.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.ExpenseManager getCurrentValuePerMonth
-INFO: the current value of expenses per month is 739.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense gas is 250.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense gas is 250.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense phone service is 60.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense newspaper is 40.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense bread is 155.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense milk is 155.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
 INFO: value per month of expense internet service is 30.0
-May 06, 2016 9:14:06 AM ro.tm.siit.expensemanager.expense.ExpenseManager addExpense
-INFO: the expense internet service has beed added
-May 06, 2016 9:14:33 AM ro.tm.siit.expensemanager.Persistence saveExpenses
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense my birthday is 0.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense television service is 35.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense fruits is 180.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense water is 62.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense electricity service is 100.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense shoes is 0.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense food is 400.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.Expense getValuePerMonth
+INFO: value per month of expense vacation is 2500.0
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.ExpenseManager getBiggestPerMonth
+INFO: the biggest expense per month is vacation and will be displayed it
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.expense.ExpenseManager displayExpenses
+INFO: the list of 1 expenses is displayed
+May 12, 2016 12:12:47 PM ro.tm.siit.expensemanager.gui.BiggestExpense$4 actionPerformed
+INFO: the biggest expense has been displayed
+May 12, 2016 12:12:53 PM ro.tm.siit.expensemanager.gui.BiggestExpense$5 actionPerformed
+INFO: the biggest expense window dialog became invisible
+May 12, 2016 12:13:00 PM ro.tm.siit.expensemanager.gui.Forecast$5 actionPerformed
+INFO: the forecast dialog window became invisible
+May 12, 2016 12:13:02 PM ro.tm.siit.expensemanager.Persistence saveExpenses
 INFO: expense manager saved 
-May 06, 2016 9:14:33 AM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame$1 windowClosing
-INFO: window closed successfully and catalog saved
+May 12, 2016 12:13:02 PM ro.tm.siit.expensemanager.gui.ExpenseManagerFrame$1 windowClosing
+INFO: window closed successfully and expenseManager saved

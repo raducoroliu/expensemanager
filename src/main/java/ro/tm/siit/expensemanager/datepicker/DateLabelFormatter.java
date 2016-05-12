@@ -3,23 +3,27 @@ package ro.tm.siit.expensemanager.datepicker;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 /**
- * DateLabelFormatter extends AbstractFormatter and models a date formatter for date picker
+ * DateLabelFormatter extends AbstractFormatter and models a date formatter for
+ * date picker
+ * 
  * @author Radu
  *
  */
 public class DateLabelFormatter extends AbstractFormatter {
-    
-    private String datePattern = "dd-MMM-yyyy";
+
+    private String datePattern = "dd-MM-yyyy";
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     /*
      * (non-Javadoc)
-     * @see javax.swing.JFormattedTextField.AbstractFormatter#stringToValue(java.lang.String)
+     * 
+     * @see
+     * javax.swing.JFormattedTextField.AbstractFormatter#stringToValue(java.lang
+     * .String)
      */
     @Override
     public Object stringToValue(String text) throws ParseException {
@@ -28,7 +32,10 @@ public class DateLabelFormatter extends AbstractFormatter {
 
     /*
      * (non-Javadoc)
-     * @see javax.swing.JFormattedTextField.AbstractFormatter#valueToString(java.lang.Object)
+     * 
+     * @see
+     * javax.swing.JFormattedTextField.AbstractFormatter#valueToString(java.lang
+     * .Object)
      */
     @Override
     public String valueToString(Object value) throws ParseException {

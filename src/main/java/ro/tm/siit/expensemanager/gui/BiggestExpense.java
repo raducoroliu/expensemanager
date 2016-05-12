@@ -32,11 +32,14 @@ import ro.tm.siit.expensemanager.expense.Expense;
 import ro.tm.siit.expensemanager.expense.ExpenseManager;
 
 /**
+ * BiggestExpense class extends JDialog and creates a dialog window in which
+ * calculates and displays the biggest expense per month or per year
+ * 
  * @author Radu
  *
  */
 public class BiggestExpense extends JDialog {
-    
+
     /**
      * logger for this class
      */
@@ -54,8 +57,18 @@ public class BiggestExpense extends JDialog {
     private JButton cancelButton;
     private LocalDate now = LocalDate.now();
 
+    /**
+     * constructor for BiggestExpense dialog window
+     * 
+     * @param expenseManager
+     *            the expense manager
+     * @param model
+     *            the expenses table model
+     */
     public BiggestExpense(ExpenseManager expenseManager, DefaultTableModel model) {
 	super();
+	LOGGER.fine(
+		"creating the biggest expense dialog window for expense manager and displays the biggest expense to expenses table");
 	this.expenseManager = expenseManager;
 	this.model = model;
 	setTitle("The biggest expense");
@@ -66,19 +79,23 @@ public class BiggestExpense extends JDialog {
 
 	    @Override
 	    public void windowClosing(WindowEvent e) {
-		monthCombo.setSelectedItem(now.getMonth());
-		yearSpinner.setValue(now.getYear());
-		monthRadio.setSelected(true);
+		initializeComponents();
+		LOGGER.info("biggest expense window dialog has been closed");
 	    }
 	});
 
 	createComponents();
+	initializeComponents();
 	arrangeComponents();
+	LOGGER.info("biggest expense window dialog has been created and is visible");
     }
 
+    /**
+     * creating the components for the biggest expense dialog window
+     */
     private void createComponents() {
+	LOGGER.fine("creating the components for biggest expense dialog window");
 	monthRadio = new JRadioButton(" by month");
-	monthRadio.setSelected(true);
 	monthRadio.addActionListener(new ActionListener() {
 
 	    @Override
@@ -105,7 +122,6 @@ public class BiggestExpense extends JDialog {
 
 	monthCombo = new JComboBox<Month>();
 	monthCombo.setModel(new DefaultComboBoxModel<Month>(Month.values()));
-	monthCombo.setSelectedItem(now.getMonth());
 	monthCombo.setBackground(Color.white);
 
 	yearLabel = new JLabel("Year : ");
@@ -117,7 +133,6 @@ public class BiggestExpense extends JDialog {
 	JFormattedTextField startFormatText = ((JSpinner.DefaultEditor) yearSpinner.getEditor()).getTextField();
 	startFormatText.setEditable(false);
 	startFormatText.setBackground(Color.white);
-	yearSpinner.setValue(now.getYear());
 
 	viewButton = new JButton("View");
 	cancelButton = new JButton("Cancel");
@@ -127,28 +142,24 @@ public class BiggestExpense extends JDialog {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		try {
+		    List<Expense> expensesForDisplay;
 		    if (group.isSelected(monthRadio.getModel())) {
 			Month month = (Month) monthCombo.getSelectedItem();
 			int year = (int) yearSpinner.getValue();
 			YearMonth yearMonth = YearMonth.of(year, month);
-			if (yearMonth.isAfter(YearMonth.now())) {
-			    throw new IllegalArgumentException("Incorrect month!");
-			}
-			List<Expense> expensesForDisplay = expenseManager.getBiggestPerMonth(yearMonth);
-			expenseManager.displayExpenses(model, expensesForDisplay);
-			setVisible(false);
+			expensesForDisplay = expenseManager.getBiggestPerMonth(yearMonth);
 		    } else {
 			Year year = Year.of((int) yearSpinner.getValue());
-			if (year.isAfter(Year.now())) {
-			    throw new IllegalArgumentException("Incorrect year!");
-			}
-			List<Expense> expensesToShow = expenseManager.getBiggestPerYear(year);
-			expenseManager.displayExpenses(model, expensesToShow);
-			setVisible(false);
+			expensesForDisplay = expenseManager.getBiggestPerYear(year);
 		    }
-		} catch (IllegalArgumentException ex) {
+		    expenseManager.displayExpenses(model, expensesForDisplay);
+		    setVisible(false);
+		} catch (NullPointerException ex) {
+		    LOGGER.warning("failed to find a biggest expense " + ex);
 		    JOptionPane.showMessageDialog(BiggestExpense.this, ex.getMessage());
 		}
+		initializeComponents();
+		LOGGER.info("the biggest expense has been displayed");
 	    }
 	});
 
@@ -156,23 +167,37 @@ public class BiggestExpense extends JDialog {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		monthCombo.setSelectedItem(now.getMonth());
-		yearSpinner.setValue(now.getYear());
-		monthRadio.setSelected(true);
+		initializeComponents();
 		setVisible(false);
+		LOGGER.info("the biggest expense window dialog became invisible");
 	    }
 	});
+	LOGGER.info("the components for biggest expense window dialog has been created");
     }
 
+    /**
+     * initializing the components for initial viewing
+     */
+    private void initializeComponents() {
+	monthCombo.setSelectedItem(now.getMonth());
+	yearSpinner.setValue(now.getYear());
+	monthRadio.setSelected(true);
+    }
+
+    /**
+     * arranges the components created in the window
+     */
     private void arrangeComponents() {
+	LOGGER.fine("arranging the components in biggest expense window dialog");
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.NONE;
 
 	c.weightx = 1;
 	c.weighty = 0.2;
+
+	// first row
 	c.gridx = 0;
 	c.gridy = 0;
-
 	c.anchor = GridBagConstraints.LINE_START;
 	add(monthRadio, c);
 
@@ -184,6 +209,7 @@ public class BiggestExpense extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(monthCombo, c);
 
+	// second row
 	c.gridx = 0;
 	c.gridy++;
 	c.anchor = GridBagConstraints.LINE_START;
@@ -197,6 +223,7 @@ public class BiggestExpense extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(yearSpinner, c);
 
+	// third row
 	c.gridx = 0;
 	c.gridy++;
 	c.gridwidth = 2;
@@ -207,5 +234,7 @@ public class BiggestExpense extends JDialog {
 	c.gridwidth = 1;
 	c.anchor = GridBagConstraints.CENTER;
 	add(cancelButton, c);
+
+	LOGGER.info("the components has been arranged in biggest expense window dialog");
     }
 }

@@ -1,6 +1,7 @@
 package ro.tm.siit.expensemanager.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -28,13 +29,20 @@ import javax.swing.SpinnerNumberModel;
 
 import ro.tm.siit.expensemanager.expense.ExpenseManager;
 
+/**
+ * Forecast class extends JDialog and creates a dialog window to calculates and
+ * displays the forecast per month or per year
+ * 
+ * @author Radu
+ *
+ */
 public class Forecast extends JDialog {
-    
+
     /**
      * logger for this class
      */
     public static final Logger LOGGER = Logger.getGlobal();
-    
+
     private ExpenseManager expenseManager;
     private JRadioButton monthRadio;
     private JRadioButton yearRadio;
@@ -48,8 +56,15 @@ public class Forecast extends JDialog {
     private JTextField forecastText;
     private LocalDate now = LocalDate.now();
 
+    /**
+     * constructor for Forecast dialog window
+     * 
+     * @param expenseManager
+     *            the expense manager
+     */
     public Forecast(ExpenseManager expenseManager) {
 	super();
+	LOGGER.fine("creating the forecast dialog window for expense manager");
 	this.expenseManager = expenseManager;
 	setTitle("Forecast");
 	setSize(300, 200);
@@ -59,20 +74,23 @@ public class Forecast extends JDialog {
 
 	    @Override
 	    public void windowClosing(WindowEvent e) {
-		monthCombo.setSelectedItem(now.getMonth());
-		yearSpinner.setValue(now.getYear());
-		forecastText.setText("");
-		monthRadio.setSelected(true);
+		initializeComponents();
+		LOGGER.info("the forecast dialog window closed");
 	    }
 	});
-	
+
 	createComponents();
+	initializeComponents();
 	arrangeComponents();
+	LOGGER.info("the forecast dialog window created and is visible");
     }
 
+    /**
+     * creating the components for forecast dialog window
+     */
     private void createComponents() {
-	monthRadio = new JRadioButton(" by month");
-	monthRadio.setSelected(true);
+	LOGGER.fine("creating the components for forecast dialog window");
+	monthRadio = new JRadioButton(" by month-year ");
 	monthRadio.addActionListener(new ActionListener() {
 
 	    @Override
@@ -99,7 +117,6 @@ public class Forecast extends JDialog {
 
 	monthCombo = new JComboBox<Month>();
 	monthCombo.setModel(new DefaultComboBoxModel<Month>(Month.values()));
-	monthCombo.setSelectedItem(now.getMonth());
 	monthCombo.setBackground(Color.white);
 
 	yearLabel = new JLabel("Year : ");
@@ -111,12 +128,15 @@ public class Forecast extends JDialog {
 	JFormattedTextField startFormatText = ((JSpinner.DefaultEditor) yearSpinner.getEditor()).getTextField();
 	startFormatText.setEditable(false);
 	startFormatText.setBackground(Color.white);
-	
+
 	forecastLabel = new JLabel("Value : ");
 	forecastText = new JTextField(10);
 	forecastText.setEditable(false);
+	Font font = new Font("Verdana", Font.BOLD, 12);
+	forecastText.setFont(font);
 	forecastText.setBackground(Color.lightGray);
-	
+	forecastText.setForeground(Color.blue);
+
 	viewButton = new JButton("View");
 	cancelButton = new JButton("Cancel");
 
@@ -130,33 +150,51 @@ public class Forecast extends JDialog {
 		    YearMonth yearMonth = YearMonth.of(year, month);
 		    double forecastPerMonth = expenseManager.getForecastPerMonth(yearMonth);
 		    forecastText.setText(String.format("%.02f", forecastPerMonth));
+		    LOGGER.info("the forecast for " + yearMonth + " is " + forecastPerMonth);
 		} else {
 		    Year year = Year.of((int) yearSpinner.getValue());
 		    double forecastPerYear = expenseManager.getForecastPerYear(year);
 		    forecastText.setText(String.format("%.02f", forecastPerYear));
+		    LOGGER.info("the forecast for " + year + " is " + forecastPerYear);
 		}
 	    }
 	});
-	
+
 	cancelButton.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		monthCombo.setSelectedItem(now.getMonth());
-		yearSpinner.setValue(now.getYear());
-		forecastText.setText("");
-		monthRadio.setSelected(true);
+		initializeComponents();
 		setVisible(false);
+		LOGGER.info("the forecast dialog window became invisible");
 	    }
 	});
+	LOGGER.info("the components for forecast dialog window has been created");
     }
 
+    /**
+     * initializing the components for initial viewing
+     */
+    private void initializeComponents() {
+	monthCombo.setSelectedItem(now.getMonth());
+	yearSpinner.setValue(now.getYear());
+	forecastText.setText("");
+	monthRadio.setSelected(true);
+	monthCombo.setEnabled(true);
+    }
+
+    /**
+     * arranges the components created in the window
+     */
     private void arrangeComponents() {
+	LOGGER.fine("arranging the components in forecast dialog window");
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.NONE;
 
 	c.weightx = 1;
 	c.weighty = 0.2;
+
+	// first row
 	c.gridx = 0;
 	c.gridy = 0;
 
@@ -171,6 +209,7 @@ public class Forecast extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(monthCombo, c);
 
+	// second row
 	c.gridx = 0;
 	c.gridy++;
 	c.anchor = GridBagConstraints.LINE_START;
@@ -184,6 +223,7 @@ public class Forecast extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(yearSpinner, c);
 
+	// third row
 	c.gridx = 1;
 	c.gridy++;
 	c.anchor = GridBagConstraints.LINE_END;
@@ -193,6 +233,7 @@ public class Forecast extends JDialog {
 	c.anchor = GridBagConstraints.LINE_START;
 	add(forecastText, c);
 
+	// fourth row
 	c.gridx = 0;
 	c.gridy++;
 	c.gridwidth = 2;
@@ -203,5 +244,7 @@ public class Forecast extends JDialog {
 	c.gridwidth = 1;
 	c.anchor = GridBagConstraints.CENTER;
 	add(cancelButton, c);
+
+	LOGGER.info("the components has been arranged in forecast dialog window");
     }
 }

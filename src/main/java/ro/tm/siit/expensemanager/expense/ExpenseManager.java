@@ -2,7 +2,6 @@ package ro.tm.siit.expensemanager.expense;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -10,12 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import ro.tm.siit.expensemanager.expense.Expense.ExpenseType;
-import ro.tm.siit.expensemanager.gui.AddExpense;
-import ro.tm.siit.expensemanager.gui.SetBudget;
 
 /**
  * ExpenseManager class implements Serializable interface and models an expenses
@@ -55,32 +51,30 @@ public class ExpenseManager implements Serializable {
      * @param addExpense
      *            the dialog window where are showing the messages
      */
-    public void addExpense(Expense expense, DefaultTableModel model, AddExpense addExpense) {
-	LOGGER.fine("adding expense " + expense.getName() + " in expenses table model " + model.toString()
-		+ " and messages will appear in window " + addExpense.getTitle());
+    public void addExpense(Expense expense, DefaultTableModel model) {
+	LOGGER.fine("adding expense " + expense.getName() + " in expenses table with model " + model.toString());
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	double currentValue = this.getCurrentValuePerMonth(expense.getDate().getMonth())
-		+ expense.getValuePerMonth(expense.getDate().getMonth());
-	if (currentValue > this.getBudgetPerMonth()) {
-	    int choice = JOptionPane.showOptionDialog(addExpense,
-		    "The budget per month will be exceeded. Do you want to continue?", "Warning",
-		    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-	    if (choice == JOptionPane.YES_OPTION) {
-		LOGGER.fine("the budget per month exceeded");
-		expenses.add(expense);
-		Object[] rowData = new Object[] { expense.getName(), expense.getValue(),
-			expense.getDate().format(formatter), expense.getExpenseType() };
-		model.addRow(rowData);
-		model.fireTableStructureChanged();
-	    }
-	} else {
-	    expenses.add(expense);
-	    Object[] rowData = new Object[] { expense.getName(), expense.getValue(),
-		    expense.getDate().format(formatter), expense.getExpenseType() };
-	    model.addRow(rowData);
-	    model.fireTableStructureChanged();
+	if (expense.getName().equals("")) {
+	    LOGGER.warning("cannot set a null name of expense");
+	    throw new IllegalArgumentException("Please enter a name of expense!");
 	}
+	if (expense.getValue() <= 0) {
+	    LOGGER.warning("cannot set a negative number to value");
+	    throw new IllegalArgumentException("Incorrect value! Value must be positive");
+	}
+	if (expense.getDate().isAfter(LocalDate.now())) {
+	    LOGGER.warning("cannot set a date in the future");
+	    throw new IllegalArgumentException("Date in the future is not possible!");
+	}
+	if (budgetPerMonth == 0) {
+	    throw new IllegalArgumentException(
+		    "The budget per month has not been set yet. Please set the budget first!");
+	}
+	expenses.add(expense);
+	Object[] rowData = new Object[] { expense.getName(), expense.getValue(), expense.getDate().format(formatter),
+		expense.getExpenseType() };
+	model.addRow(rowData);
+	model.fireTableStructureChanged();
 	LOGGER.info("the expense " + expense.getName() + " has beed added");
     }
 
@@ -100,24 +94,15 @@ public class ExpenseManager implements Serializable {
      * @param budgetPerMonth
      *            the budgetPerMonth to set
      */
-    public void setBudgetPerMonth(float budget, SetBudget setBudget) {
-	LOGGER.fine("setting value " + budget + " to budget per month for expense and messages will appear in window "
-		+ setBudget.getTitle());
+    public void setBudgetPerMonth(float budget) {
+	LOGGER.fine("setting value " + budget + " to budget per month for expense");
 	if (budget < 0) {
-	    LOGGER.warning("cannot set the budget negative per month");
-	    throw new IllegalArgumentException("Negative number is not allowed!");
+	    LOGGER.warning("cannot set a negative budget per month");
+	    throw new IllegalArgumentException("Negative budget is not allowed!");
 	}
 	if (budget == 0) {
-	    LOGGER.warning("cannot set the null budget per month");
+	    LOGGER.warning("cannot set a null budget per month");
 	    throw new IllegalArgumentException("Null budget is not allowed!");
-	}
-	if (budgetPerMonth > 0 && budget != budgetPerMonth) {
-	    int choice = JOptionPane.showOptionDialog(setBudget, "The budget will be changed. Do you want to continue?",
-		    "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-	    if (choice == JOptionPane.NO_OPTION) {
-		budget = budgetPerMonth;
-		LOGGER.fine("the budget per month has been changed");
-	    }
 	}
 	this.budgetPerMonth = budget;
 	LOGGER.info("the budget per month " + budgetPerMonth + " has been set");
@@ -147,8 +132,13 @@ public class ExpenseManager implements Serializable {
 		biggest = e;
 	    }
 	}
-	expensesForDisplay.add(biggest);
-	LOGGER.info("the biggest expense per year is " + biggest.getName() + " and will be displayed it");
+	if (biggest == null) {
+	    LOGGER.info("there are not expenses in year " + year);
+	    throw new NullPointerException("There are not expenses in year " + year);
+	} else {
+	    expensesForDisplay.add(biggest);
+	    LOGGER.info("the biggest expense per year is " + biggest.getName() + " and will be displayed it");
+	}
 	return expensesForDisplay;
     }
 
@@ -178,8 +168,13 @@ public class ExpenseManager implements Serializable {
 		biggest = e;
 	    }
 	}
-	expensesForDisplay.add(biggest);
-	LOGGER.info("the biggest expense per month is " + biggest.getName() + " and will be displayed it");
+	if (biggest == null) {
+	    LOGGER.info("there are not expenses in month " + yearMonth);
+	    throw new NullPointerException("There are not expenses in month " + yearMonth);
+	} else {
+	    expensesForDisplay.add(biggest);
+	    LOGGER.info("the biggest expense per month is " + biggest.getName() + " and will be displayed it");
+	}
 	return expensesForDisplay;
     }
 
@@ -193,9 +188,10 @@ public class ExpenseManager implements Serializable {
     public double getForecastPerMonth(YearMonth yearMonth) {
 	LOGGER.fine("getting value of forecast per month " + yearMonth.getMonth() + " and year " + yearMonth.getYear());
 	double forecast = 0;
-	LocalDate date = LocalDate.of(yearMonth.getYear() - 1, yearMonth.getMonthValue() + 1, 1);
+	YearMonth expenseYearMonth;
 	for (Expense e : expenses) {
-	    if (e.getDate().isBefore(date)) {
+	    expenseYearMonth = YearMonth.from(e.getDate());
+	    if (expenseYearMonth.isBefore(yearMonth.minusYears(1).plusMonths(1))) {
 		forecast += e.getValuePerMonth(yearMonth.getMonth());
 	    }
 	}
@@ -229,11 +225,14 @@ public class ExpenseManager implements Serializable {
      *            the month which is calculated
      * @return the current value per month
      */
-    public double getCurrentValuePerMonth(Month month) {
-	LOGGER.fine("calculating current value of expenses per month " + month);
+    public double getCurrentValuePerMonth(YearMonth yearMonth) {
+	LOGGER.fine("calculating current value of expenses per month " + yearMonth);
 	double currentValue = 0;
 	for (Expense e : expenses) {
-	    currentValue += e.getValuePerMonth(month);
+	    if (YearMonth.from(e.getDate()).isAfter(yearMonth)) {
+		continue;
+	    }
+	    currentValue += e.getValuePerMonth(yearMonth.getMonth());
 	}
 	LOGGER.info("the current value of expenses per month is " + currentValue);
 	return currentValue;
@@ -287,12 +286,17 @@ public class ExpenseManager implements Serializable {
      */
     public List<Expense> getExpensesByTypeAndDay(String type, LocalDate date) {
 	LOGGER.fine("creating the expenses list filtered by type " + type + " and date " + date + " for display");
+	if (date.isAfter(LocalDate.now())) {
+	    LOGGER.warning("cannot set a date in the future");
+	    throw new IllegalArgumentException("Date in the future is not possible!");
+	}
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
-	for (Expense e : expenses) {
-	    if (!date.equals(e.getDate())) {
+	List<Expense> eType = this.getExpensesByType(type);
+	for (Expense e : eType) {
+	    if (e.getDate().isAfter(date)) {
 		continue;
 	    }
-	    if (type.equals("all types") || e.getExpenseType().equals(ExpenseType.valueOf(type))) {
+	    if (e.getDate().equals(date) || type.equals(ExpenseType.DAILY.name())) {
 		expensesForDisplay.add(e);
 	    }
 	}
@@ -312,20 +316,44 @@ public class ExpenseManager implements Serializable {
      *            the month and year period where it ends
      * @return the expenses list for displayed
      */
-    public List<Expense> getExpensesByTypeAndPeriod(String type, YearMonth start, YearMonth to) {
-	LOGGER.fine(
-		"creating the expenses list filtered by type " + type + " and the period from " + start + " to " + to);
+    public List<Expense> getExpensesByTypeAndMonth(String type, YearMonth yearMonth) {
+	LOGGER.fine("creating the expenses list filtered by type " + type + " and the month " + yearMonth);
+	if (yearMonth.isAfter(YearMonth.now())) {
+	    LOGGER.warning("cannot set a month in the future");
+	    throw new IllegalArgumentException("Month in the future is not possible!");
+	}
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
-	for (Expense e : expenses) {
-	    if (e.getDate().isBefore(start.atDay(1)) || e.getDate().isAfter(to.atDay(to.lengthOfMonth()))) {
+	List<Expense> eType = this.getExpensesByType(type);
+	YearMonth expenseYearMonth;
+	for (Expense e : eType) {
+	    expenseYearMonth = YearMonth.from(e.getDate());
+	    if (expenseYearMonth.isAfter(yearMonth)) {
 		continue;
 	    }
-	    if (type.equals("all types") || e.getExpenseType().equals(ExpenseType.valueOf(type))) {
+	    if (expenseYearMonth.equals(yearMonth) || !type.equals(ExpenseType.YEARLY.name())) {
 		expensesForDisplay.add(e);
 	    }
 	}
 	LOGGER.info("the list of " + expensesForDisplay.size()
-		+ " expenses filtered by type and period is created and returned");
+		+ " expenses filtered by type and month is created and returned");
+	return expensesForDisplay;
+    }
+
+    public List<Expense> getExpensesByTypeAndYear(String type, Year year) {
+	LOGGER.fine("creating the expenses list filtered by type " + type + " and the year " + year);
+	if (year.isAfter(Year.now())) {
+	    LOGGER.warning("cannot set a year in the future");
+	    throw new IllegalArgumentException("Year in the future is not possible!");
+	}
+	List<Expense> expensesForDisplay = new ArrayList<Expense>();
+	List<Expense> eType = this.getExpensesByType(type);
+	for (Expense e : eType) {
+	    if (e.getDate().getYear() <= year.getValue()) {
+		expensesForDisplay.add(e);
+	    }
+	}
+	LOGGER.info("the list of " + expensesForDisplay.size()
+		+ " expenses filtered by type and year is created and returned");
 	return expensesForDisplay;
     }
 
