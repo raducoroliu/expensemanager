@@ -109,40 +109,6 @@ public class ExpenseManager implements Serializable {
     }
 
     /**
-     * gets the biggest expense for year
-     * 
-     * @param year
-     *            the year for which calculates
-     * @return the biggest expense
-     */
-    public List<Expense> getBiggestPerYear(Year year) {
-	LOGGER.fine("getting value of biggest expense per year " + year.getValue());
-	List<Expense> expensesForDisplay = new ArrayList<Expense>();
-	Expense biggest = null;
-	boolean isFirst = true;
-	for (Expense e : expenses) {
-	    if (e.getDate().getYear() > year.getValue()) {
-		continue;
-	    }
-	    if (isFirst) {
-		biggest = e;
-		isFirst = false;
-	    }
-	    if (e.getValuePerYear() > biggest.getValuePerYear()) {
-		biggest = e;
-	    }
-	}
-	if (biggest == null) {
-	    LOGGER.info("there are not expenses in year " + year);
-	    throw new NullPointerException("There are not expenses in year " + year);
-	} else {
-	    expensesForDisplay.add(biggest);
-	    LOGGER.info("the biggest expense per year is " + biggest.getName() + " and will be displayed it");
-	}
-	return expensesForDisplay;
-    }
-
-    /**
      * gets the biggest expense per month
      * 
      * @param yearMonth
@@ -150,22 +116,19 @@ public class ExpenseManager implements Serializable {
      * @return the biggest expense
      */
     public List<Expense> getBiggestPerMonth(YearMonth yearMonth) {
-	LOGGER.fine("getting value of biggest expense per month " + yearMonth.getMonth() + " and year "
-		+ yearMonth.getYear());
+	LOGGER.fine("getting value of biggest expense per month " + yearMonth);
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
-	LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), yearMonth.lengthOfMonth());
 	Expense biggest = null;
 	boolean isFirst = true;
 	for (Expense e : expenses) {
-	    if (e.getDate().isAfter(date)) {
-		continue;
-	    }
-	    if (isFirst) {
-		biggest = e;
-		isFirst = false;
-	    }
-	    if (e.getValuePerMonth(yearMonth.getMonth()) > biggest.getValuePerMonth(yearMonth.getMonth())) {
-		biggest = e;
+	    if (e.getValuePerMonth(yearMonth) > 0) {
+		if (isFirst) {
+		    biggest = e;
+		    isFirst = false;
+		}
+		if (e.getValuePerMonth(yearMonth) > biggest.getValuePerMonth(yearMonth)) {
+		    biggest = e;
+		}
 	    }
 	}
 	if (biggest == null) {
@@ -173,7 +136,42 @@ public class ExpenseManager implements Serializable {
 	    throw new NullPointerException("There are not expenses in month " + yearMonth);
 	} else {
 	    expensesForDisplay.add(biggest);
-	    LOGGER.info("the biggest expense per month is " + biggest.getName() + " and will be displayed it");
+	    LOGGER.info("the biggest expense per month " + yearMonth + " is " + biggest.getName()
+		    + " and will be displayed it");
+	}
+	return expensesForDisplay;
+    }
+
+    /**
+     * gets the biggest expense for year
+     * 
+     * @param year
+     *            the year for which calculates
+     * @return the biggest expense
+     */
+    public List<Expense> getBiggestPerYear(Year year) {
+	LOGGER.fine("getting value of biggest expense per year " + year);
+	List<Expense> expensesForDisplay = new ArrayList<Expense>();
+	Expense biggest = null;
+	boolean isFirst = true;
+	for (Expense e : expenses) {
+	    if (e.getValuePerYear(year) > 0) {
+		if (isFirst) {
+		    biggest = e;
+		    isFirst = false;
+		}
+		if (e.getValuePerYear(year) > biggest.getValuePerYear(year)) {
+		    biggest = e;
+		}
+	    }
+	}
+	if (biggest == null) {
+	    LOGGER.info("there are not expenses in year " + year);
+	    throw new NullPointerException("There are not expenses in year " + year);
+	} else {
+	    expensesForDisplay.add(biggest);
+	    LOGGER.info(
+		    "the biggest expense per year " + year + " is " + biggest.getName() + " and will be displayed it");
 	}
 	return expensesForDisplay;
     }
@@ -186,16 +184,12 @@ public class ExpenseManager implements Serializable {
      * @return the forecast value
      */
     public double getForecastPerMonth(YearMonth yearMonth) {
-	LOGGER.fine("getting value of forecast per month " + yearMonth.getMonth() + " and year " + yearMonth.getYear());
+	LOGGER.fine("getting value of forecast per month " + yearMonth);
 	double forecast = 0;
-	YearMonth expenseYearMonth;
 	for (Expense e : expenses) {
-	    expenseYearMonth = YearMonth.from(e.getDate());
-	    if (expenseYearMonth.isBefore(yearMonth.minusYears(1).plusMonths(1))) {
-		forecast += e.getValuePerMonth(yearMonth.getMonth());
-	    }
+	    forecast += e.getValuePerMonth(yearMonth.minusYears(1));
 	}
-	LOGGER.info("the forecast value of expenses per month is " + forecast * 1.05);
+	LOGGER.info("the forecast value of expenses per month " + yearMonth + " is " + (forecast * 1.05));
 	return forecast * 1.05;
     }
 
@@ -207,14 +201,12 @@ public class ExpenseManager implements Serializable {
      * @return the forecast value
      */
     public double getForecastPerYear(Year year) {
-	LOGGER.fine("getting value of forecast per year " + year.getValue());
+	LOGGER.fine("getting value of forecast per year " + year);
 	double forecast = 0;
 	for (Expense e : expenses) {
-	    if (e.getDate().getYear() < (year.getValue())) {
-		forecast += e.getValuePerYear();
-	    }
+	    forecast += e.getValuePerYear(year.minusYears(1));
 	}
-	LOGGER.info("the forecast value of expenses per year is " + forecast * 1.05);
+	LOGGER.info("the forecast value of expenses per year " + year + " is " + (forecast * 1.05));
 	return forecast * 1.05;
     }
 
@@ -229,12 +221,9 @@ public class ExpenseManager implements Serializable {
 	LOGGER.fine("calculating current value of expenses per month " + yearMonth);
 	double currentValue = 0;
 	for (Expense e : expenses) {
-	    if (YearMonth.from(e.getDate()).isAfter(yearMonth)) {
-		continue;
-	    }
-	    currentValue += e.getValuePerMonth(yearMonth.getMonth());
+	    currentValue += e.getValuePerMonth(yearMonth);
 	}
-	LOGGER.info("the current value of expenses per month is " + currentValue);
+	LOGGER.info("the current value of expenses per month " + yearMonth + " is " + currentValue);
 	return currentValue;
     }
 
@@ -293,10 +282,7 @@ public class ExpenseManager implements Serializable {
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
 	for (Expense e : eType) {
-	    if (e.getDate().isAfter(date)) {
-		continue;
-	    }
-	    if (e.getDate().equals(date) || type.equals(ExpenseType.DAILY.name())) {
+	    if (e.existsInDay(date)) {
 		expensesForDisplay.add(e);
 	    }
 	}
@@ -306,14 +292,12 @@ public class ExpenseManager implements Serializable {
     }
 
     /**
-     * gets the expenses list filtered by type and period
+     * gets the expenses list filtered by type and month
      * 
      * @param type
      *            the expense type to filtered
-     * @param start
-     *            the month and year period where it begins
-     * @param to
-     *            the month and year period where it ends
+     * @param yearMont
+     *            the month and year to filtered
      * @return the expenses list for displayed
      */
     public List<Expense> getExpensesByTypeAndMonth(String type, YearMonth yearMonth) {
@@ -324,13 +308,8 @@ public class ExpenseManager implements Serializable {
 	}
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
-	YearMonth expenseYearMonth;
 	for (Expense e : eType) {
-	    expenseYearMonth = YearMonth.from(e.getDate());
-	    if (expenseYearMonth.isAfter(yearMonth)) {
-		continue;
-	    }
-	    if (expenseYearMonth.equals(yearMonth) || !type.equals(ExpenseType.YEARLY.name())) {
+	    if (e.existsInMonth(yearMonth)) {
 		expensesForDisplay.add(e);
 	    }
 	}
@@ -339,6 +318,15 @@ public class ExpenseManager implements Serializable {
 	return expensesForDisplay;
     }
 
+    /**
+     * gets the expenses list filtered by type and year
+     * 
+     * @param type
+     *            the expense type to filtered
+     * @param year
+     *            the year to filtered
+     * @return the expenses list for displayed
+     */
     public List<Expense> getExpensesByTypeAndYear(String type, Year year) {
 	LOGGER.fine("creating the expenses list filtered by type " + type + " and the year " + year);
 	if (year.isAfter(Year.now())) {
@@ -348,7 +336,7 @@ public class ExpenseManager implements Serializable {
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
 	for (Expense e : eType) {
-	    if (e.getDate().getYear() <= year.getValue()) {
+	    if (e.existsInYear(year)) {
 		expensesForDisplay.add(e);
 	    }
 	}

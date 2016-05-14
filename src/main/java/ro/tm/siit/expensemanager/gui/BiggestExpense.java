@@ -180,6 +180,7 @@ public class BiggestExpense extends JDialog {
      */
     private void initializeComponents() {
 	monthCombo.setSelectedItem(now.getMonth());
+	monthCombo.setEnabled(true);
 	yearSpinner.setValue(now.getYear());
 	monthRadio.setSelected(true);
     }

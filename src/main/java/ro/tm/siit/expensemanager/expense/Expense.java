@@ -2,7 +2,8 @@ package ro.tm.siit.expensemanager.expense;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.logging.Logger;
 
 /**
@@ -102,26 +103,28 @@ public class Expense implements Serializable {
      *            the month for which is calculated
      * @return the value per month
      */
-    public double getValuePerMonth(Month month) {
-	LOGGER.fine("calculating value per month " + month + " for expense " + name);
+    public double getValuePerMonth(YearMonth yearMonth) {
+	LOGGER.fine("calculating value per month " + yearMonth + " for expense " + name);
 	double valuePerMonth = 0;
-	switch (expenseType) {
-	case YEARLY:
-	    if (date.getMonthValue() == month.getValue()) {
+	if (date.getYear() == yearMonth.getYear() && date.getMonthValue() <= yearMonth.getMonthValue()) {
+	    switch (expenseType) {
+	    case YEARLY:
+		if (date.getMonthValue() == yearMonth.getMonthValue()) {
+		    valuePerMonth = value;
+		}
+		break;
+	    case MONTHLY:
 		valuePerMonth = value;
+		break;
+	    case WEEKLY:
+		valuePerMonth = value * 4;
+		break;
+	    case DAILY:
+		valuePerMonth = value * 31;
+		break;
 	    }
-	    break;
-	case MONTHLY:
-	    valuePerMonth = value;
-	    break;
-	case WEEKLY:
-	    valuePerMonth = value * 4;
-	    break;
-	case DAILY:
-	    valuePerMonth = value * 31;
-	    break;
 	}
-	LOGGER.info("value per month of expense " + name + " is " + valuePerMonth);
+	LOGGER.info("value per month " + yearMonth + " of expense " + name + " is " + valuePerMonth);
 	return valuePerMonth;
     }
 
@@ -130,24 +133,101 @@ public class Expense implements Serializable {
      * 
      * @return the value per year
      */
-    public double getValuePerYear() {
-	LOGGER.fine("calculating value per year for expense " + name);
+    public double getValuePerYear(Year year) {
+	LOGGER.fine("calculating value per year " + year + " for expense " + name);
 	double valuePerYear = 0;
-	switch (expenseType) {
-	case YEARLY:
-	    valuePerYear = value;
-	    break;
-	case MONTHLY:
-	    valuePerYear = value * 12;
-	    break;
-	case WEEKLY:
-	    valuePerYear = value * 52;
-	    break;
-	case DAILY:
-	    valuePerYear = value * 365;
-	    break;
+	if (date.getYear() == year.getValue()) {
+	    switch (expenseType) {
+	    case YEARLY:
+		valuePerYear = value;
+		break;
+	    case MONTHLY:
+		valuePerYear = value * 12;
+		break;
+	    case WEEKLY:
+		valuePerYear = value * 52;
+		break;
+	    case DAILY:
+		valuePerYear = value * 365;
+		break;
+	    }
 	}
-	LOGGER.info("value per year of expense " + name + " is " + valuePerYear);
+	LOGGER.info("value per year " + year + " of expense " + name + " is " + valuePerYear);
 	return valuePerYear;
+    }
+
+    /**
+     * Determines whether the expense exists in a specific date
+     * 
+     * @param day
+     *            the specific date
+     * @return true if exists and false is not exists
+     */
+    public boolean existsInDay(LocalDate day) {
+	boolean isInDay = false;
+	if (date.getYear() == day.getYear() && date.isBefore(day.plusDays(1))) {
+	    switch (expenseType) {
+	    case YEARLY:
+		if (date.equals(day)) {
+		    isInDay = true;
+		}
+		break;
+	    case MONTHLY:
+		if (date.equals(day) || day.getDayOfMonth() == 1) {
+		    isInDay = true;
+		}
+		break;
+	    case WEEKLY:
+		if (date.equals(day) || day.getDayOfWeek().getValue() == 1) {
+		    isInDay = true;
+		}
+		break;
+	    case DAILY:
+		isInDay = true;
+		break;
+	    }
+	}
+	return isInDay;
+    }
+
+    /**
+     * Determines whether the expense exists in a specific month
+     * 
+     * @param yearMonth
+     *            the specific month
+     * @return true if exists and false is not exists
+     */
+    public boolean existsInMonth(YearMonth yearMonth) {
+	boolean isInMonth = false;
+	if (date.getYear() == yearMonth.getYear() && YearMonth.from(date).isBefore(yearMonth.plusMonths(1))) {
+	    switch (expenseType) {
+	    case YEARLY:
+		if (date.getMonthValue() == yearMonth.getMonthValue()) {
+		    isInMonth = true;
+		}
+		break;
+	    case MONTHLY:
+	    case WEEKLY:
+	    case DAILY:
+		isInMonth = true;
+		break;
+	    }
+	}
+	return isInMonth;
+    }
+
+    /**
+     * Determines whether the expense exists in a specific year
+     * 
+     * @param year
+     *            the specific year
+     * @return true if exists and false is not exists
+     */
+    public boolean existsInYear(Year year) {
+	boolean isInYear = false;
+	if (date.getYear() == year.getValue()) {
+	    isInYear = true;
+	}
+	return isInYear;
     }
 }

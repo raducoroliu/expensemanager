@@ -128,26 +128,6 @@ public class ExpenseManagerTest {
     }
 
     /**
-     * Tests whether the biggest expense per year is calculated for a year
-     * without expenses
-     */
-    @Test(expected = NullPointerException.class)
-    public void testGetBiggestPerYearNull() {
-	Year year = Year.of(2014);
-	expenseManager.getBiggestPerYear(year);
-    }
-
-    /**
-     * Tests whether the biggest expense per year is calculated correctly
-     */
-    @Test()
-    public void testGetBiggestPerYear() {
-	Year year = Year.of(2015);
-	List<Expense> list = expenseManager.getBiggestPerYear(year);
-	assertEquals("gas", list.get(0).getName());
-    }
-
-    /**
      * Tests whether the biggest expense per month is calculated for a month
      * without expenses
      */
@@ -175,6 +155,26 @@ public class ExpenseManagerTest {
     public void testGetBiggestPerMonth() {
 	YearMonth yearMonth = YearMonth.of(2015, 6);
 	List<Expense> list = expenseManager.getBiggestPerMonth(yearMonth);
+	assertEquals("gas", list.get(0).getName());
+    }
+
+    /**
+     * Tests whether the biggest expense per year is calculated for a year
+     * without expenses
+     */
+    @Test(expected = NullPointerException.class)
+    public void testGetBiggestPerYearNull() {
+	Year year = Year.of(2014);
+	expenseManager.getBiggestPerYear(year);
+    }
+
+    /**
+     * Tests whether the biggest expense per year is calculated correctly
+     */
+    @Test()
+    public void testGetBiggestPerYear() {
+	Year year = Year.of(2015);
+	List<Expense> list = expenseManager.getBiggestPerYear(year);
 	assertEquals("gas", list.get(0).getName());
     }
 
@@ -272,7 +272,7 @@ public class ExpenseManagerTest {
     @Test()
     public void testGetExpensesByTypeAndDay() {
 	String type = "DAILY";
-	LocalDate date = LocalDate.of(2016, 2, 2);
+	LocalDate date = LocalDate.of(2015, 12, 2);
 	List<Expense> expensesForDisplay = expenseManager.getExpensesByTypeAndDay(type, date);
 	assertEquals(1, expensesForDisplay.size(), 0);
     }

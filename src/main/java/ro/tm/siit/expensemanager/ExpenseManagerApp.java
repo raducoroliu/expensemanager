@@ -8,7 +8,9 @@ import ro.tm.siit.expensemanager.gui.ExpenseManagerFrame;
 /**
  * Creates a desktop gui application to manage personal expenses that support
  * add expense , lookup expense by filter options, calculates a forecast per
- * month and per year and determines the biggest expense per month or per year.
+ * month and per year and determines the biggest expense per month or per
+ * year.Is considered that of the beginning a new year all the expenses of the
+ * last year are not available for the new year.
  * 
  * @author Radu
  *
@@ -26,8 +28,8 @@ public class ExpenseManagerApp {
      * @param args
      */
     public static void main(String[] args) {
-	LOGGER.fine("starting application");
 	new Logging().configure("expensemanager.log");
+	LOGGER.fine("starting application");
 	Persistence storage = new Persistence();
 	ExpenseManager expenseManager = storage.loadExpenses();
 

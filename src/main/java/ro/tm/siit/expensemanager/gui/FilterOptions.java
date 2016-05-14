@@ -170,7 +170,7 @@ public class FilterOptions extends JDialog {
 		    if (dateCheck.isSelected()) {
 			LocalDate date = myDatePicker.getLocalDate();
 			expensesForDisplay = expenseManager.getExpensesByTypeAndDay(type, date);
-			
+
 		    } else if (monthCheck.isSelected()) {
 			Month month = (Month) monthCombo.getSelectedItem();
 			int year = (int) yearSpinner.getValue();
@@ -222,8 +222,8 @@ public class FilterOptions extends JDialog {
 	datePicker.getComponent(1).setEnabled(false);
 	monthCombo.setSelectedIndex(0);
 	monthCombo.setEnabled(false);
-	yearSpinner.setEnabled(false);
 	yearSpinner.setValue(now.getYear());
+	yearSpinner.setEnabled(false);
 	LOGGER.info("the components has been initialized");
     }
 
