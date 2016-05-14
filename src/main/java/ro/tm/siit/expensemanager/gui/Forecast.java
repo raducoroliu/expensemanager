@@ -96,6 +96,7 @@ public class Forecast extends JDialog {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		monthCombo.setEnabled(true);
+		forecastText.setText("");
 	    }
 	});
 
@@ -105,7 +106,7 @@ public class Forecast extends JDialog {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		monthCombo.setEnabled(false);
-
+		forecastText.setText("");
 	    }
 	});
 

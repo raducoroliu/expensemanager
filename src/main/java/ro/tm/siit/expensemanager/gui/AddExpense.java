@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.logging.Logger;
@@ -72,6 +74,14 @@ public class AddExpense extends JDialog {
 	setSize(300, 300);
 	getContentPane().setLayout(new GridBagLayout());
 	setLocationRelativeTo(null);
+	addWindowListener(new WindowAdapter() {
+
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+		initializeComponents();
+		LOGGER.info("the addExpense dialog window closed");
+	    }
+	});
 
 	createComponents();
 	initializeComponents();

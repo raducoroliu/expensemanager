@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -48,6 +50,14 @@ public class SetBudget extends JDialog {
 	setSize(250, 150);
 	getContentPane().setLayout(new GridBagLayout());
 	setLocationRelativeTo(null);
+	addWindowListener(new WindowAdapter() {
+
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+		budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
+		LOGGER.info("the setBudget dialog window closed");
+	    }
+	});
 
 	createComponents();
 	arrangeComponents();
@@ -82,7 +92,6 @@ public class SetBudget extends JDialog {
 			}
 		    }
 		    expenseManager.setBudgetPerMonth(budgetPerMonth);
-		    budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
 		    setVisible(false);
 		    LOGGER.info("the limit budget per month is " + budgetPerMonth
 			    + " the SetBudget dialog window became invisible");
@@ -93,6 +102,7 @@ public class SetBudget extends JDialog {
 		    LOGGER.warning("set budget failed " + ex);
 		    JOptionPane.showMessageDialog(SetBudget.this, ex.getMessage());
 		}
+		budgetText.setText(String.valueOf(expenseManager.getBudgetPerMonth()));
 	    }
 	});
 
