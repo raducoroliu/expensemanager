@@ -84,7 +84,6 @@ public class ExpenseManagerFrame extends JFrame {
 
 	add(scrollPane, BorderLayout.CENTER);
 	createMenuBar();
-	menu.setEnabled(false);
 
 	List<Expense> expensesForDisplay = expenseManager.getAll();
 	expenseManager.displayExpenses(model, expensesForDisplay);
@@ -190,7 +189,7 @@ public class ExpenseManagerFrame extends JFrame {
 	menu.add(fileMenu);
 	menu.add(viewMenu);
 	menu.add(statisticsMenu);
-	
+
 	setJMenuBar(menu);
 	LOGGER.info("the menu for expense manager window are created");
     }

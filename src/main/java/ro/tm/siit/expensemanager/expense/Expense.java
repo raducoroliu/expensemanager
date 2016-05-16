@@ -163,7 +163,7 @@ public class Expense implements Serializable {
      *            the specific date
      * @return true if exists and false is not exists
      */
-    public boolean existsInDay(LocalDate day) {
+    public boolean isMadeInDay(LocalDate day) {
 	boolean isInDay = false;
 	if (date.getYear() == day.getYear() && date.isBefore(day.plusDays(1))) {
 	    switch (expenseType) {
@@ -197,7 +197,7 @@ public class Expense implements Serializable {
      *            the specific month
      * @return true if exists and false is not exists
      */
-    public boolean existsInMonth(YearMonth yearMonth) {
+    public boolean isMadeInMonth(YearMonth yearMonth) {
 	boolean isInMonth = false;
 	if (date.getYear() == yearMonth.getYear() && YearMonth.from(date).isBefore(yearMonth.plusMonths(1))) {
 	    switch (expenseType) {
@@ -223,7 +223,7 @@ public class Expense implements Serializable {
      *            the specific year
      * @return true if exists and false is not exists
      */
-    public boolean existsInYear(Year year) {
+    public boolean isMadeInYear(Year year) {
 	boolean isInYear = false;
 	if (date.getYear() == year.getValue()) {
 	    isInYear = true;

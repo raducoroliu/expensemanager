@@ -139,7 +139,7 @@ public class AddExpense extends JDialog {
 		    JOptionPane.showMessageDialog(AddExpense.this, ex.getMessage());
 		} catch (NullPointerException ex) {
 		    LOGGER.warning("failed adding expense " + ex);
-		    JOptionPane.showMessageDialog(AddExpense.this, "Please enter date in all fields!");
+		    JOptionPane.showMessageDialog(AddExpense.this, "Empty fields are not allowed!");
 		}
 	    }
 	});

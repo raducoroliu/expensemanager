@@ -250,7 +250,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 4, 12);
 	ExpenseType type = ExpenseType.DAILY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInDay(LocalDate.of(2016, 4, 11)));
+	assertFalse(expense.isMadeInDay(LocalDate.of(2016, 4, 11)));
     }
 
     /**
@@ -263,7 +263,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 5, 11);
 	ExpenseType type = ExpenseType.DAILY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInDay(LocalDate.of(2016, 6, 21)));
+	assertFalse(expense.isMadeInDay(LocalDate.of(2016, 6, 21)));
     }
 
     /**
@@ -277,7 +277,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 5, 15);
 	ExpenseType type = ExpenseType.DAILY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInDay(LocalDate.of(2015, 6, 21)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2015, 6, 21)));
     }
 
     /**
@@ -291,7 +291,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 3, 18);
 	ExpenseType type = ExpenseType.WEEKLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInDay(LocalDate.of(2016, 3, 19)));
+	assertFalse(expense.isMadeInDay(LocalDate.of(2016, 3, 19)));
     }
 
     /**
@@ -305,7 +305,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 3, 18);
 	ExpenseType type = ExpenseType.WEEKLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInDay(LocalDate.of(2016, 3, 18)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 3, 18)));
     }
 
     /**
@@ -319,7 +319,7 @@ public class ExpenseTest {
 	ExpenseType type = ExpenseType.WEEKLY;
 	Expense expense = new Expense(name, value, date, type);
 	// choose a day that is Monday
-	assertTrue(expense.existsInDay(LocalDate.of(2016, 4, 4)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 4)));
     }
 
     /**
@@ -332,7 +332,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 1, 30);
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInDay(LocalDate.of(2016, 2, 2)));
+	assertFalse(expense.isMadeInDay(LocalDate.of(2016, 2, 2)));
     }
 
     /**
@@ -346,7 +346,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 1, 30);
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInDay(LocalDate.of(2016, 1, 30)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 1, 30)));
     }
 
     /**
@@ -361,7 +361,7 @@ public class ExpenseTest {
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
 	// choose a day that is the first day in month
-	assertTrue(expense.existsInDay(LocalDate.of(2016, 4, 1)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 1)));
     }
 
     /**
@@ -375,7 +375,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 8, 10);
 	ExpenseType type = ExpenseType.YEARLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInDay(LocalDate.of(2015, 8, 10)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2015, 8, 10)));
     }
 
     /**
@@ -388,7 +388,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 8, 10);
 	ExpenseType type = ExpenseType.YEARLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInDay(LocalDate.of(2015, 10, 21)));
+	assertFalse(expense.isMadeInDay(LocalDate.of(2015, 10, 21)));
     }
 
     /**
@@ -401,7 +401,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 1, 30);
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInMonth(YearMonth.of(2016, 4)));
+	assertTrue(expense.isMadeInMonth(YearMonth.of(2016, 4)));
     }
 
     /**
@@ -415,7 +415,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 8, 10);
 	ExpenseType type = ExpenseType.YEARLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInMonth(YearMonth.of(2015, 8)));
+	assertTrue(expense.isMadeInMonth(YearMonth.of(2015, 8)));
     }
 
     /**
@@ -428,7 +428,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 8, 10);
 	ExpenseType type = ExpenseType.YEARLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInMonth(YearMonth.of(2015, 10)));
+	assertFalse(expense.isMadeInMonth(YearMonth.of(2015, 10)));
     }
 
     /**
@@ -441,7 +441,7 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2015, 5, 15);
 	ExpenseType type = ExpenseType.DAILY;
 	Expense expense = new Expense(name, value, date, type);
-	assertTrue(expense.existsInYear(Year.of(2015)));
+	assertTrue(expense.isMadeInYear(Year.of(2015)));
     }
 
     /**
@@ -454,6 +454,6 @@ public class ExpenseTest {
 	LocalDate date = LocalDate.of(2016, 1, 30);
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
-	assertFalse(expense.existsInYear(Year.of(2015)));
+	assertFalse(expense.isMadeInYear(Year.of(2015)));
     }
 }

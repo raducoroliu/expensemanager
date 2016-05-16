@@ -282,7 +282,7 @@ public class ExpenseManager implements Serializable {
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
 	for (Expense e : eType) {
-	    if (e.existsInDay(date)) {
+	    if (e.isMadeInDay(date)) {
 		expensesForDisplay.add(e);
 	    }
 	}
@@ -309,7 +309,7 @@ public class ExpenseManager implements Serializable {
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
 	for (Expense e : eType) {
-	    if (e.existsInMonth(yearMonth)) {
+	    if (e.isMadeInMonth(yearMonth)) {
 		expensesForDisplay.add(e);
 	    }
 	}
@@ -336,7 +336,7 @@ public class ExpenseManager implements Serializable {
 	List<Expense> expensesForDisplay = new ArrayList<Expense>();
 	List<Expense> eType = this.getExpensesByType(type);
 	for (Expense e : eType) {
-	    if (e.existsInYear(year)) {
+	    if (e.isMadeInYear(year)) {
 		expensesForDisplay.add(e);
 	    }
 	}
