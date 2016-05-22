@@ -312,14 +312,14 @@ public class ExpenseTest {
      * Tests whether the expense with weekly type was made in a MONDAY
      */
     @Test
-    public void testExistsInDayWeeklyForMonday() {
+    public void testExistsInDayWeeklyForSameDayOfWeek() {
 	String name = "beer";
 	float value = 40;
 	LocalDate date = LocalDate.of(2016, 3, 18);
 	ExpenseType type = ExpenseType.WEEKLY;
 	Expense expense = new Expense(name, value, date, type);
 	// choose a day that is Monday
-	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 4)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 8)));
     }
 
     /**
@@ -354,14 +354,14 @@ public class ExpenseTest {
      * month
      */
     @Test
-    public void testExistsInDayMonthlyForFirstDayInMonth() {
+    public void testExistsInDayMonthlyForSameDayInMonth() {
 	String name = "gas";
 	float value = 300;
 	LocalDate date = LocalDate.of(2016, 1, 30);
 	ExpenseType type = ExpenseType.MONTHLY;
 	Expense expense = new Expense(name, value, date, type);
 	// choose a day that is the first day in month
-	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 1)));
+	assertTrue(expense.isMadeInDay(LocalDate.of(2016, 4, 30)));
     }
 
     /**
