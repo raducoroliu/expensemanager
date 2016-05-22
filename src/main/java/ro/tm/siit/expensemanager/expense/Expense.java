@@ -173,12 +173,12 @@ public class Expense implements Serializable {
 		}
 		break;
 	    case MONTHLY:
-		if (date.equals(day) || day.getDayOfMonth() == 1) {
+		if (date.equals(day) || date.getDayOfMonth() == day.getDayOfMonth()) {
 		    isInDay = true;
 		}
 		break;
 	    case WEEKLY:
-		if (date.equals(day) || day.getDayOfWeek().getValue() == 1) {
+		if (date.equals(day) || date.getDayOfWeek().getValue() == day.getDayOfWeek().getValue()) {
 		    isInDay = true;
 		}
 		break;
